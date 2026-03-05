@@ -1,0 +1,36 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor Admin
+actor User
+
+rectangle "IoT data logger" {
+
+  usecase UC_UM   as "User management"
+  usecase UC_DM   as "Device management"
+  usecase UC_DL   as "Data logging"
+  usecase UC_VD   as "Visualize data"
+  usecase UC_AUTH as "Authentication check"
+  usecase UC_EXP  as "Export data"
+
+
+  UC_VD  .left.> UC_AUTH : <<include>>
+  UC_EXP .left.> UC_VD   : <<extend>>
+
+  UC_UM -left[hidden]-> UC_DM
+  UC_DM -left[hidden]-> UC_DL
+  UC_DL -left[hidden]-> UC_VD
+  UC_VD -left[hidden]-> UC_AUTH
+  UC_AUTH -left[hidden]-> UC_EXP
+}
+
+actor Device
+
+Admin  -- UC_UM
+Admin  -- UC_DM
+User   -- UC_VD
+UC_DL -- Device
+
+
+@enduml
