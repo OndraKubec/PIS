@@ -1,0 +1,1765 @@
+
+Úkol na use case diagramy. textové zadání zní:
+
+Výrobní informační systém MES obsahuje několik kategorií funkcionalit. 1) Správu zakázek, kde je možné zakázku na výrobu produktu vytvořit, spustit, vytvořit plán spouštění a ten potom spustit, zakázku stornovat, vymazat a podrobně sledovat. V kategorii 2) Správa zdrojů je možné nakonfigurovat nový výrobní zdroj, definovat jeho operace a pomocí sledu operací definovat nový produkt. 3) kategorií jsou analýzy a statistiky, kde je možné zobrazit grafy stavů strojů (výrobních zdrojů), tedy poměr času kdy vyráběly, kdy byly v idle a kdy byly v chybovém stavu. Dále je možné provést analýzu energetické náročnosti. Odlišné přístupy mají tři kategorie uživatelů (v dané firmě oddělení): produkce (výrobní funkcionality), technologie (editace a zadávání nových produktů/postupů) a technické oddělení (editace a zadávání nových výrobních zařízení a jejich procesů)
+
+vytvoř seznam jednotlivých aktérů a use casů
+
+Aktéři (uživatelské role / oddělení)
+Produkce (Production / Operátor výroby)
+Primárně používá funkcionality pro správu a realizaci zakázek + sledování průběhu.
+Technologie (Technology / Technolog)
+Primárně používá funkcionality pro definici produktu a výrobního postupu (operace, sekvence operací).
+Technické oddělení (Maintenance / Technický správce zdrojů)
+Primárně používá funkcionality pro konfiguraci výrobních zdrojů a jejich operací/procesů.
+(Volitelně, pokud chceš mít v UC diagramu i integrace:)
+4. Externí systém (např. ERP/Energy metering/SCADA/IIoT gateway) – pokud MES přebírá data o stavech strojů a energii automaticky.
+Use casy podle kategorií
+1) Správa zakázek
+Vytvořit zakázku (na výrobu produktu)
+Spustit zakázku
+Vytvořit plán spouštění zakázek
+Spustit plán spouštění
+Stornovat zakázku
+Vymazat zakázku
+Podrobně sledovat zakázku (detailní tracking / průběh / stav)
+2) Správa zdrojů
+Konfigurovat nový výrobní zdroj
+Definovat operace výrobního zdroje
+Definovat nový produkt pomocí sledu operací (tj. definice technologického postupu / routingu)
+3) Analýzy a statistiky
+Zobrazit grafy stavů strojů (výroba / idle / chyba)
+Provést analýzu energetické náročnosti
+Typické přiřazení (kdo co používá)
+Produkce: Vytvořit zakázku, Spustit zakázku, Vytvořit plán spouštění, Spustit plán, Stornovat/ Vymazat (dle práv), Podrobně sledovat zakázku, Zobrazit grafy stavů, Analýza energie.
+Technologie: Definovat nový produkt pomocí sledu operací (a často i prohlížení analýz).
+Technické oddělení: Konfigurovat zdroj, Definovat operace zdroje (a často i prohlížení grafů stavů / energie).
+Pokud chceš, v dalším kroku z toho rovnou udělám strukturovaný návrh UC diagramu (včetně <<include>> / <<extend>> vazeb a hranice systému MES).
+
+Mám pár bodů ke zlepšení formulací:
+
+Terminologická zpřesnění (konkrétní body)
+1. „Zakázka na výrobu produktu“
+Původní formulace
+zakázku na výrobu produktu vytvořit
+Přesnější terminologie
+výrobní zakázku
+případně výrobní příkaz
+Důvod:
+V MES/ERP terminologii se běžně používá pojem výrobní zakázka (production order).
+2. „Vytvořit plán spouštění zakázek“
+Původní formulace
+vytvořit plán spouštění zakázek
+Přesnější terminologie
+vytvořit výrobní plán
+naplánovat výrobní zakázky
+Důvod:
+MES typicky používá pojem plánování výroby / production scheduling.
+3. „Podrobně sledovat zakázku“
+Původní formulace
+podrobně sledovat zakázku
+Přesnější terminologie
+sledovat průběh výrobní zakázky
+monitorovat stav zakázky
+Důvod:
+„tracking“ se v MES často nazývá monitoring průběhu výroby.
+4. „Výrobní zdroj“
+Původní formulace
+výrobní zdroj
+Přesnější terminologie
+výrobní zařízení
+případně výrobní zdroj (stroj / pracoviště)
+Důvod:
+„resource“ v MES může být:
+stroj
+pracovní stanice
+výrobní linka
+Proto je dobré naznačit co konkrétně zdroj znamená.
+5. „Definovat operace výrobního zdroje“
+Původní formulace
+definovat operace výrobního zdroje
+Přesnější terminologie
+definovat operace výrobního zařízení
+definovat technologické operace stroje
+Důvod:
+Operace jsou technologické kroky, které zařízení vykonává.
+6. „Definovat nový produkt pomocí sledu operací“
+Původní formulace
+pomocí sledu operací definovat nový produkt
+Přesnější terminologie
+definovat technologický postup výroby produktu
+případně definovat výrobní routingu produktu
+Důvod:
+V MES se používá termín:
+routing
+technologický postup
+7. „Grafy stavů strojů“
+Původní formulace
+grafy stavů strojů
+Přesnější terminologie
+grafy stavů výrobních zařízení
+statistika provozních stavů strojů
+8. „Idle“
+Původní formulace
+kdy byly v idle
+Přesnější terminologie
+v nečinnosti (idle)
+9. „Chybový stav“
+Původní formulace
+chybový stav
+Přesnější terminologie
+poruchový stav
+stav poruchy
+Důvod:
+V průmyslu se používá fault / failure state.
+10. „Analýza energetické náročnosti“
+Přesnější varianta
+analýza energetické spotřeby výroby
+analýza energetické náročnosti výrobních procesů
+11. „Editace a zadávání“
+Původní formulace
+editace a zadávání nových produktů
+Přesnější terminologie
+definice
+konfigurace
+Např.:
+definice technologických postupů
+konfigurace výrobních zdrojů
+
+Tvoje připomínky jsou terminologicky správné a odpovídají běžné praxi v MES / ISA-95 / výrobních informačních systémech. Níže je upravený a konzistentní seznam aktérů a use casů, kde jsou použity průmyslově standardní termíny. Struktura je připravená tak, aby se přímo dala převést do UML Use Case diagramu.
+Aktéři systému MES
+1. Produkce
+Oddělení odpovědné za řízení a realizaci výroby.
+2. Technologie
+Oddělení odpovědné za definici výrobků a technologických postupů.
+3. Technické oddělení
+Oddělení odpovědné za konfiguraci a správu výrobních zařízení.
+(volitelný aktér pokud by systém komunikoval s jinými systémy)
+
+4. Externí systém
+Např. ERP / energetický monitoring / SCADA / IoT gateway poskytující provozní data.
+Use casy systému
+1. Správa výrobních zakázek
+(use casy primárně pro Produkci)
+Vytvořit výrobní zakázku
+Spustit výrobní zakázku
+Naplánovat výrobní zakázky (vytvořit výrobní plán)
+Spustit výrobní plán
+Stornovat výrobní zakázku
+Vymazat výrobní zakázku
+Monitorovat průběh výrobní zakázky
+2. Správa výrobních zařízení
+(use casy primárně pro Technické oddělení)
+Konfigurovat výrobní zařízení
+Definovat operace výrobního zařízení
+3. Správa technologických postupů
+(use casy primárně pro Technologii)
+Definovat technologický postup výroby produktu
+(definice výrobního routingu – sled operací)
+4. Analýzy a statistiky
+(use casy pro Produkci / Technologie / Technické oddělení)
+Zobrazit grafy stavů výrobních zařízení
+výroba
+nečinnost (idle)
+poruchový stav
+Analyzovat energetickou spotřebu výroby
+Finální seznam Use Case (pro UML)
+Vytvořit výrobní zakázku
+Spustit výrobní zakázku
+Naplánovat výrobní zakázky
+Spustit výrobní plán
+Stornovat výrobní zakázku
+Vymazat výrobní zakázku
+Monitorovat průběh výrobní zakázky
+Konfigurovat výrobní zařízení
+Definovat operace výrobního zařízení
+Definovat technologický postup výroby produktu
+Zobrazit grafy stavů výrobních zařízení
+Analyzovat energetickou spotřebu výroby
+✅ Tento seznam je:
+terminologicky konzistentní s MES
+dobře mapovatelný do UML
+připravený pro další krok (include/extend vazby)
+Pokud chceš, můžu ti v dalším kroku ukázat ještě 3 věci, které učitelé na use case diagramech MES skoro vždy chtějí:
+správné <<include>> vztahy (např. monitoring → grafy)
+generalizaci aktérů (např. Zaměstnanec → Produkce / Technologie / Technické oddělení)
+lepší strukturu use casů pro plánování výroby (protože tam bývá logická hierarchie).
+
+proveď:
+
+správné <<include>> vztahy (např. monitoring → grafy)
+generalizaci aktérů (např. Zaměstnanec → Produkce / Technologie / Technické oddělení)
+
+Níže máš návrh generalizace aktérů a <<include>> vztahů v UML UC logice pro tvůj MES. Držím se toho, aby include znamenalo povinný, znovupoužitelný pod-krok (ne „volitelnou funkci“).
+1) Generalizace aktérů
+Aktéři
+Zaměstnanec (abstraktní / nadřazený aktér)
+Produkce
+Technologie
+Technické oddělení
+Význam
+Cokoliv, co mohou dělat „všichni interní uživatelé“, připojíš na Zaměstnance (např. „Zobrazit analýzy“).
+Specializované use casy napojíš přímo na konkrétní oddělení.
+Volitelně můžeš přidat ještě:
+Externí systém (bez generalizace) pro dodávku dat (stavy, energie).
+2) Správné <<include>> vztahy (doporučené)
+A) Plánování a spouštění výroby
+Spustit výrobní plán <<include>> Naplánovat výrobní zakázky
+Dává smysl, pokud „spuštění plánu“ vždy vyžaduje existenci/validaci plánu (tzn. v rámci UC „Spustit výrobní plán“ se vždy provede krok „vybrat/ověřit plán“).
+Naplánovat výrobní zakázky <<include>> Ověřit kapacity výrobních zařízení (nový pod-UC)
+Kapacitní kontrola je typicky povinná část plánování (stroj/kalendář/obsazenost).
+Spustit výrobní zakázku <<include>> Ověřit připravenost výrobního zařízení (nový pod-UC)
+Typicky check: zařízení dostupné, bez poruchy, správná konfigurace.
+(Pozn.: tyto „ověřovací“ UC jsou velmi typické v zadáních, i když nejsou explicitně napsané — pomáhají ti udělat smysluplné include vazby.)
+B) Monitoring a analýzy (tvůj příklad „monitoring → grafy“)
+Tady je důležitá logika: grafy jsou forma zobrazení/analýzy, ale monitoring (sledování zakázky) je širší UC.
+Doporučené vazby:
+
+Monitorovat průběh výrobní zakázky <<include>> Zobrazit aktuální stav výrobní zakázky (nový pod-UC)
+Stav = běží/pozastaveno/dokončeno, aktuální operace, kusy OK/NOK, čas.
+Monitorovat průběh výrobní zakázky <<include>> Zobrazit grafy stavů výrobních zařízení
+Pokud v rámci monitoringu zakázky systém vždy ukazuje i stav zařízení (OEE-like timeline) jako součást monitoringu.
+Alternativa (často ještě čistší v UML):
+Zobrazit grafy stavů výrobních zařízení je samostatný UC dostupný pro Zaměstnance
+a Monitorovat průběh výrobní zakázky ho jen používá, pokud je to povinná součást. Když není povinná, pak to není include, ale spíš extend (ale ty teď chceš include, takže výše je „include-varianta“).
+Analyzovat energetickou spotřebu výroby <<include>> Získat energetická data (nový pod-UC)
+Získání dat (měření) je povinný krok analýzy.
+Zobrazit grafy stavů výrobních zařízení <<include>> Získat data o stavech výrobních zařízení (nový pod-UC)
+Opět: grafy bez dat nedávají smysl → datový sběr je povinný.
+Pokud máš aktéra „Externí systém“, pak tyto „Získat data…“ UC mohou být napojené i na něj (Externí systém jako sekundární aktér dodávající data).
+3) Rychlé shrnutí vazeb (seznam)
+Generalizace
+Produkce —|> Zaměstnanec
+Technologie —|> Zaměstnanec
+Technické oddělení —|> Zaměstnanec
+Include
+Spustit výrobní plán <<include>> Naplánovat výrobní zakázky
+Naplánovat výrobní zakázky <<include>> Ověřit kapacity výrobních zařízení
+Spustit výrobní zakázku <<include>> Ověřit připravenost výrobního zařízení
+Monitorovat průběh výrobní zakázky <<include>> Zobrazit aktuální stav výrobní zakázky
+Monitorovat průběh výrobní zakázky <<include>> Zobrazit grafy stavů výrobních zařízení
+Zobrazit grafy stavů výrobních zařízení <<include>> Získat data o stavech výrobních zařízení
+Analyzovat energetickou spotřebu výroby <<include>> Získat energetická data
+Pokud chceš, dalším krokem to převedu přímo do PlantUML tak, aby:
+generalizace aktérů byla správně šipkami -|>
+<<include>> byly tečkované šipky .> se stereotypem
+a celé to bylo rozdělené do 3 balíčků (zakázky / zařízení / analýzy), aby diagram nebyl “spaghetti”.
+
+vykresli do plantuml
+
+@startuml
+left to right direction
+
+skinparam shadowing false
+skinparam usecase {
+  BackgroundColor White
+  BorderColor Black
+}
+skinparam actorStyle awesome
+
+' =========================
+' Actors + Generalization
+' =========================
+actor "Zaměstnanec" as Employee
+actor "Produkce" as Production
+actor "Technologie" as Technology
+actor "Technické oddělení" as Maintenance
+actor "Externí systém" as External
+
+Production -|> Employee
+Technology -|> Employee
+Maintenance -|> Employee
+
+' =========================
+' System boundary
+' =========================
+rectangle "MES (Manufacturing Execution System)" as MES {
+
+  ' --- Správa výrobních zakázek ---
+  package "Správa výrobních zakázek" {
+
+    usecase "Vytvořit\nvýrobní zakázku" as UC_CreateOrder
+    usecase "Spustit\nvýrobní zakázku" as UC_StartOrder
+    usecase "Naplánovat\nvýrobní zakázky\n(výrobní plán)" as UC_Schedule
+    usecase "Spustit\nvýrobní plán" as UC_StartPlan
+    usecase "Stornovat\nvýrobní zakázku" as UC_CancelOrder
+    usecase "Vymazat\nvýrobní zakázku" as UC_DeleteOrder
+    usecase "Monitorovat průběh\nvýrobní zakázky" as UC_MonitorOrder
+
+    usecase "Ověřit kapacity\nvýrobních zařízení" as UC_CheckCapacity
+    usecase "Ověřit připravenost\nvýrobního zařízení" as UC_CheckReadiness
+    usecase "Zobrazit aktuální stav\nvýrobní zakázky" as UC_ShowOrderStatus
+  }
+
+  ' --- Správa výrobních zařízení ---
+  package "Správa výrobních zařízení" {
+
+    usecase "Konfigurovat\nvýrobní zařízení" as UC_ConfigDevice
+    usecase "Definovat operace\nvýrobního zařízení" as UC_DefineDeviceOps
+  }
+
+  ' --- Analýzy a statistiky ---
+  package "Analýzy a statistiky" {
+
+    usecase "Zobrazit grafy stavů\nvýrobních zařízení" as UC_ShowMachineStates
+    usecase "Analyzovat energetickou\nspotřebu výroby" as UC_EnergyAnalysis
+
+    usecase "Získat data o stavech\nvýrobních zařízení" as UC_GetMachineStateData
+    usecase "Získat energetická data" as UC_GetEnergyData
+  }
+
+  ' =========================
+  ' <<include>> relationships
+  ' =========================
+  UC_StartPlan ..> UC_Schedule : <<include>>
+  UC_Schedule ..> UC_CheckCapacity : <<include>>
+  UC_StartOrder ..> UC_CheckReadiness : <<include>>
+
+  UC_MonitorOrder ..> UC_ShowOrderStatus : <<include>>
+  UC_MonitorOrder ..> UC_ShowMachineStates : <<include>>
+
+  UC_ShowMachineStates ..> UC_GetMachineStateData : <<include>>
+  UC_EnergyAnalysis ..> UC_GetEnergyData : <<include>>
+}
+
+' =========================
+' Actor associations
+' =========================
+
+' Produkce
+Production -- UC_CreateOrder
+Production -- UC_StartOrder
+Production -- UC_Schedule
+Production -- UC_StartPlan
+Production -- UC_CancelOrder
+Production -- UC_DeleteOrder
+Production -- UC_MonitorOrder
+Production -- UC_ShowMachineStates
+Production -- UC_EnergyAnalysis
+
+' Technologie
+Technology -- UC_EnergyAnalysis
+Technology -- UC_ShowMachineStates
+
+' Technické oddělení
+Maintenance -- UC_ConfigDevice
+Maintenance -- UC_DefineDeviceOps
+Maintenance -- UC_ShowMachineStates
+Maintenance -- UC_EnergyAnalysis
+
+' "Všichni interní uživatelé" (přes Zaměstnance)
+Employee -- UC_ShowMachineStates
+Employee -- UC_EnergyAnalysis
+
+' Externí systém jako zdroj dat
+External -- UC_GetMachineStateData
+External -- UC_GetEnergyData
+
+@enduml
+Poznámka (aby ti to nedělalo zbytečný zmatek v diagramu):
+Aktér Zaměstnanec už „dědí“ na Produkci/Technologii/Technické, takže typicky v diagramu připojuješ společné UC buď:
+jen na Zaměstnance (a pak už je zbytečné je znovu napojovat na jednotlivé role), nebo
+jen na jednotlivé role (a Zaměstnance nepoužiješ).
+Tady jsem to nechal schválně obojí (i Employee i role) jako názornou variantu; když chceš “čistší UML”, smaž buď vazby z Employee, nebo z rolí u analýz.
+
+the layout needs to be like that: @startuml SmartHangar Use Case Diagram
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Uživatel" as User
+
+rectangle SmartHangar {
+    usecase "Získání a uložení\nmeteo dat" as UC1
+    usecase "Predikce koroze" as UC2
+    usecase "Uložení dat\no korozi" as UC3
+    usecase "Upozornění\nna limit" as UC4
+    usecase "Zobrazení\nvybraných dat" as UC5
+}
+
+actor "Časovač" as Timer
+
+User -down-> UC1
+User -down-> UC5
+UC1 -left[hidden]- UC2
+UC2 -left[hidden]- UC3
+UC3 -left[hidden]- UC4
+UC4 -left[hidden]- UC5
+UC2 -left-> UC3 : <<include>>
+UC3 .left.> UC4 : <<extend>>
+UC1 <-down- Timer
+UC2 <-down- Timer
+
+@enduml
+
+the individual sections in mes needs to be in single column
+
+To force vertical columns in PlantUML (like your SmartHangar example), we use hidden links (-[hidden]-) to control ordering and -down-> for actor connections.
+Below is a MES diagram structured in three vertical columns (Zakázky → Zařízení → Analýzy).
+@startuml MES Use Case Diagram
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Zaměstnanec" as Employee
+actor "Produkce" as Production
+actor "Technologie" as Technology
+actor "Technické oddělení" as Maintenance
+actor "Externí systém" as External
+
+Production -|> Employee
+Technology -|> Employee
+Maintenance -|> Employee
+
+rectangle MES {
+
+' =========================
+' COLUMN 1 – Správa zakázek
+' =========================
+
+usecase "Vytvořit\nvýrobní zakázku" as UC1
+usecase "Naplánovat\nvýrobní zakázky" as UC2
+usecase "Spustit\nvýrobní plán" as UC3
+usecase "Spustit\nvýrobní zakázku" as UC4
+usecase "Monitorovat průběh\nvýrobní zakázky" as UC5
+usecase "Stornovat\nvýrobní zakázku" as UC6
+usecase "Vymazat\nvýrobní zakázku" as UC7
+
+usecase "Ověřit kapacity\nvýrobních zařízení" as UC8
+usecase "Ověřit připravenost\nvýrobního zařízení" as UC9
+usecase "Zobrazit aktuální stav\nvýrobní zakázky" as UC10
+
+' vertical ordering
+UC1 -[hidden]- UC2
+UC2 -[hidden]- UC3
+UC3 -[hidden]- UC4
+UC4 -[hidden]- UC5
+UC5 -[hidden]- UC6
+UC6 -[hidden]- UC7
+
+' =========================
+' COLUMN 2 – Správa zařízení
+' =========================
+
+usecase "Konfigurovat\nvýrobní zařízení" as UC11
+usecase "Definovat operace\nvýrobního zařízení" as UC12
+
+UC11 -[hidden]- UC12
+
+' =========================
+' COLUMN 3 – Analýzy
+' =========================
+
+usecase "Zobrazit grafy stavů\nvýrobních zařízení" as UC13
+usecase "Analyzovat energetickou\nspotřebu výroby" as UC14
+usecase "Získat data o stavech\nzařízení" as UC15
+usecase "Získat energetická data" as UC16
+
+UC13 -[hidden]- UC14
+UC14 -[hidden]- UC15
+UC15 -[hidden]- UC16
+
+' =========================
+' INCLUDE relationships
+' =========================
+
+UC3 -left-> UC2 : <<include>>
+UC2 -left-> UC8 : <<include>>
+UC4 -left-> UC9 : <<include>>
+
+UC5 -left-> UC10 : <<include>>
+UC5 -right-> UC13 : <<include>>
+
+UC13 -down-> UC15 : <<include>>
+UC14 -down-> UC16 : <<include>>
+
+}
+
+' =========================
+' Actor connections
+' =========================
+
+Production -down-> UC1
+Production -down-> UC2
+Production -down-> UC3
+Production -down-> UC4
+Production -down-> UC5
+Production -down-> UC6
+Production -down-> UC7
+
+Maintenance -down-> UC11
+Maintenance -down-> UC12
+
+Employee -down-> UC13
+Employee -down-> UC14
+
+External -down-> UC15
+External -down-> UC16
+
+@enduml
+Co tento layout dělá
+3 jasné vertikální sloupce
+Správa výrobních zakázek
+Správa výrobních zařízení
+Analýzy a statistiky
+hidden edges drží use casy pod sebou.
+left to right direction zajistí sloupce vedle sebe.
+-down-> u aktérů drží vazby zleva dolů, takže diagram zůstane čitelný.
+💡 Pokud chceš, můžu ti ještě ukázat 1 trik, který PlantUML výrazně stabilizuje layout UC diagramů (pomocí together {} bloků) — to se často používá na školních UML projektech, aby se diagram „nerozpadal“ při každé změně.
+
+no, single column, not row, keep the sections as they were
+
+To keep sections (packages) but force each section to be a vertical column, the trick is:
+Keep the packages (Správa zakázek / zařízení / analýzy).
+Inside each package, force vertical order with hidden links.
+Use hidden links between the first elements of packages to keep the packages side-by-side.
+Here is a corrected PlantUML layout with single-column sections:
+@startuml MES Use Case Diagram
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Zaměstnanec" as Employee
+actor "Produkce" as Production
+actor "Technologie" as Technology
+actor "Technické oddělení" as Maintenance
+actor "Externí systém" as External
+
+Production -|> Employee
+Technology -|> Employee
+Maintenance -|> Employee
+
+rectangle MES {
+
+package "Správa výrobních zakázek" {
+
+    usecase "Vytvořit\nvýrobní zakázku" as UC1
+    usecase "Naplánovat\nvýrobní zakázky" as UC2
+    usecase "Spustit\nvýrobní plán" as UC3
+    usecase "Spustit\nvýrobní zakázku" as UC4
+    usecase "Monitorovat průběh\nvýrobní zakázky" as UC5
+    usecase "Stornovat\nvýrobní zakázku" as UC6
+    usecase "Vymazat\nvýrobní zakázku" as UC7
+
+    usecase "Ověřit kapacity\nvýrobních zařízení" as UC8
+    usecase "Ověřit připravenost\nvýrobního zařízení" as UC9
+    usecase "Zobrazit aktuální stav\nvýrobní zakázky" as UC10
+
+    UC1 -[hidden]- UC2
+    UC2 -[hidden]- UC3
+    UC3 -[hidden]- UC4
+    UC4 -[hidden]- UC5
+    UC5 -[hidden]- UC6
+    UC6 -[hidden]- UC7
+}
+
+package "Správa výrobních zařízení" {
+
+    usecase "Konfigurovat\nvýrobní zařízení" as UC11
+    usecase "Definovat operace\nvýrobního zařízení" as UC12
+
+    UC11 -[hidden]- UC12
+}
+
+package "Analýzy a statistiky" {
+
+    usecase "Zobrazit grafy stavů\nvýrobních zařízení" as UC13
+    usecase "Analyzovat energetickou\nspotřebu výroby" as UC14
+    usecase "Získat data o stavech\nzařízení" as UC15
+    usecase "Získat energetická data" as UC16
+
+    UC13 -[hidden]- UC14
+    UC14 -[hidden]- UC15
+    UC15 -[hidden]- UC16
+}
+
+' force packages to appear as columns
+UC1 -[hidden]- UC11
+UC11 -[hidden]- UC13
+
+' include relations
+UC3 -left-> UC2 : <<include>>
+UC2 -down-> UC8 : <<include>>
+UC4 -down-> UC9 : <<include>>
+
+UC5 -down-> UC10 : <<include>>
+UC5 -right-> UC13 : <<include>>
+
+UC13 -down-> UC15 : <<include>>
+UC14 -down-> UC16 : <<include>>
+
+}
+
+' actor relations
+Production -down-> UC1
+Production -down-> UC2
+Production -down-> UC3
+Production -down-> UC4
+Production -down-> UC5
+Production -down-> UC6
+Production -down-> UC7
+
+Maintenance -down-> UC11
+Maintenance -down-> UC12
+
+Employee -down-> UC13
+Employee -down-> UC14
+
+External -down-> UC15
+External -down-> UC16
+
+@enduml
+Resulting structure
+The diagram will appear as three vertical columns:
+Správa výrobních zakázek   |   Správa výrobních zařízení   |   Analýzy a statistiky
+-------------------------  |   ---------------------------  |   ---------------------
+Vytvořit zakázku           |   Konfigurovat zařízení        |   Grafy stavů zařízení
+Naplánovat zakázky         |   Definovat operace            |   Analýza energie
+Spustit plán               |                                |   Získat data stavů
+Spustit zakázku            |                                |   Získat energetická data
+Monitorovat průběh         |
+Stornovat zakázku          |
+Vymazat zakázku            |
+If you want, I can also show a much cleaner academic layout (used in software engineering courses) where:
+actors are on the left
+packages are perfectly aligned columns
+include arrows never cross, which makes the diagram look significantly more professional.
+
+i want single column multiple rows
+
+Got it: one single vertical column (multiple rows), while keeping the sections (packages) as you had them. That means:
+Packages are stacked top → bottom inside the MES boundary.
+Use cases inside each package are forced into one vertical stack via -[hidden]-.
+Optional: hidden links between packages to stabilize the vertical flow.
+Here’s the PlantUML:
+@startuml MES Use Case Diagram
+top to bottom direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam actorStyle awesome
+
+actor "Zaměstnanec" as Employee
+actor "Produkce" as Production
+actor "Technologie" as Technology
+actor "Technické oddělení" as Maintenance
+actor "Externí systém" as External
+
+Production -|> Employee
+Technology -|> Employee
+Maintenance -|> Employee
+
+rectangle MES {
+
+  package "Správa výrobních zakázek" {
+
+    usecase "Vytvořit\nvýrobní zakázku" as UC1
+    usecase "Naplánovat\nvýrobní zakázky" as UC2
+    usecase "Spustit\nvýrobní plán" as UC3
+    usecase "Spustit\nvýrobní zakázku" as UC4
+    usecase "Monitorovat průběh\nvýrobní zakázky" as UC5
+    usecase "Stornovat\nvýrobní zakázku" as UC6
+    usecase "Vymazat\nvýrobní zakázku" as UC7
+
+    usecase "Ověřit kapacity\nvýrobních zařízení" as UC8
+    usecase "Ověřit připravenost\nvýrobního zařízení" as UC9
+    usecase "Zobrazit aktuální stav\nvýrobní zakázky" as UC10
+
+    ' single-column ordering inside the section
+    UC1 -[hidden]-> UC2
+    UC2 -[hidden]-> UC3
+    UC3 -[hidden]-> UC4
+    UC4 -[hidden]-> UC5
+    UC5 -[hidden]-> UC6
+    UC6 -[hidden]-> UC7
+    UC7 -[hidden]-> UC8
+    UC8 -[hidden]-> UC9
+    UC9 -[hidden]-> UC10
+  }
+
+  package "Správa výrobních zařízení" {
+
+    usecase "Konfigurovat\nvýrobní zařízení" as UC11
+    usecase "Definovat operace\nvýrobního zařízení" as UC12
+
+    UC11 -[hidden]-> UC12
+  }
+
+  package "Analýzy a statistiky" {
+
+    usecase "Zobrazit grafy stavů\nvýrobních zařízení" as UC13
+    usecase "Analyzovat energetickou\nspotřebu výroby" as UC14
+    usecase "Získat data o stavech\nzařízení" as UC15
+    usecase "Získat energetická data" as UC16
+
+    UC13 -[hidden]-> UC14
+    UC14 -[hidden]-> UC15
+    UC15 -[hidden]-> UC16
+  }
+
+  ' stabilize package stacking (keeps them in one vertical column)
+  UC10 -[hidden]-> UC11
+  UC12 -[hidden]-> UC13
+
+  ' =========================
+  ' <<include>> relationships
+  ' =========================
+  UC3 ..> UC2 : <<include>>
+  UC2 ..> UC8 : <<include>>
+  UC4 ..> UC9 : <<include>>
+
+  UC5 ..> UC10 : <<include>>
+  UC5 ..> UC13 : <<include>>
+
+  UC13 ..> UC15 : <<include>>
+  UC14 ..> UC16 : <<include>>
+}
+
+' =========================
+' Actor associations (kept minimal to avoid clutter)
+' =========================
+Production --> UC1
+Production --> UC2
+Production --> UC3
+Production --> UC4
+Production --> UC5
+Production --> UC6
+Production --> UC7
+
+Maintenance --> UC11
+Maintenance --> UC12
+
+Employee --> UC13
+Employee --> UC14
+
+External --> UC15
+External --> UC16
+
+@enduml
+If you want it to look even closer to your SmartHangar style, I can also:
+force actors to be above or below the system (-down->),
+and ensure no arrows cross by re-routing include arrows (-left->, -right->, -down->).
+
+nice, but actors need to be on left side of mes (first col) the mes and its sections as it is now (in mid/second col) and in third col should be system actors
+
+@startuml MES Use Case Diagram
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam actorStyle awesome
+
+' =========================
+' Actors (LEFT column)
+' =========================
+actor "Zaměstnanec" as Employee
+actor "Produkce" as Production
+actor "Technologie" as Technology
+actor "Technické oddělení" as Maintenance
+
+Production -|> Employee
+Technology -|> Employee
+Maintenance -|> Employee
+
+' =========================
+' System actors (RIGHT column)
+' =========================
+actor "Externí systém" as External
+
+' =========================
+' System boundary (MIDDLE column)
+' =========================
+rectangle MES {
+
+  package "Správa výrobních zakázek" {
+
+    usecase "Vytvořit\nvýrobní zakázku" as UC1
+    usecase "Naplánovat\nvýrobní zakázky" as UC2
+    usecase "Spustit\nvýrobní plán" as UC3
+    usecase "Spustit\nvýrobní zakázku" as UC4
+    usecase "Monitorovat průběh\nvýrobní zakázky" as UC5
+    usecase "Stornovat\nvýrobní zakázku" as UC6
+    usecase "Vymazat\nvýrobní zakázku" as UC7
+
+    usecase "Ověřit kapacity\nvýrobních zařízení" as UC8
+    usecase "Ověřit připravenost\nvýrobního zařízení" as UC9
+    usecase "Zobrazit aktuální stav\nvýrobní zakázky" as UC10
+
+    ' keep single column inside section
+    UC1 -[hidden]-> UC2
+    UC2 -[hidden]-> UC3
+    UC3 -[hidden]-> UC4
+    UC4 -[hidden]-> UC5
+    UC5 -[hidden]-> UC6
+    UC6 -[hidden]-> UC7
+    UC7 -[hidden]-> UC8
+    UC8 -[hidden]-> UC9
+    UC9 -[hidden]-> UC10
+  }
+
+  package "Správa výrobních zařízení" {
+
+    usecase "Konfigurovat\nvýrobní zařízení" as UC11
+    usecase "Definovat operace\nvýrobního zařízení" as UC12
+
+    UC11 -[hidden]-> UC12
+  }
+
+  package "Analýzy a statistiky" {
+
+    usecase "Zobrazit grafy stavů\nvýrobních zařízení" as UC13
+    usecase "Analyzovat energetickou\nspotřebu výroby" as UC14
+    usecase "Získat data o stavech\nzařízení" as UC15
+    usecase "Získat energetická data" as UC16
+
+    UC13 -[hidden]-> UC14
+    UC14 -[hidden]-> UC15
+    UC15 -[hidden]-> UC16
+  }
+
+  ' keep packages stacked in one vertical column
+  UC10 -[hidden]-> UC11
+  UC12 -[hidden]-> UC13
+
+  ' =========================
+  ' <<include>> relationships
+  ' =========================
+  UC3 ..> UC2 : <<include>>
+  UC2 ..> UC8 : <<include>>
+  UC4 ..> UC9 : <<include>>
+
+  UC5 ..> UC10 : <<include>>
+  UC5 ..> UC13 : <<include>>
+
+  UC13 ..> UC15 : <<include>>
+  UC14 ..> UC16 : <<include>>
+}
+
+' =========================
+' Force 3-column layout
+' LEFT: internal actors, MID: MES, RIGHT: system actors
+' =========================
+Employee -[hidden]-> MES
+MES -[hidden]-> External
+
+' =========================
+' Associations (LEFT -> MES)
+' =========================
+Production --> UC1
+Production --> UC2
+Production --> UC3
+Production --> UC4
+Production --> UC5
+Production --> UC6
+Production --> UC7
+
+Maintenance --> UC11
+Maintenance --> UC12
+
+Employee --> UC13
+Employee --> UC14
+
+' =========================
+' Associations (RIGHT -> MES)
+' =========================
+External --> UC15
+External --> UC16
+
+@enduml
+If PlantUML still “floats” the right-side actor too close to the system in your renderer, tell me which renderer you use (PlantText / VS Code plugin / IntelliJ / etc.) and I’ll tweak it with together {} + a couple of extra hidden anchors to make the column separation rock-solid.
+
+@startuml MES Use Case Diagram
+left to right direction
+
+actor "Zaměstnanec" as Employee
+actor "Produkce" as Production
+actor "Technologie" as Technology
+actor "Technické oddělení" as Maintenance
+
+Production -|> Employee
+Technology -|> Employee
+Maintenance -|> Employee
+
+rectangle MES {
+
+  top to bottom direction
+
+  package "Správa výrobních zakázek" {
+
+    usecase "Vytvořit\nvýrobní zakázku" as UC1
+    usecase "Naplánovat\nvýrobní zakázky" as UC2
+    usecase "Spustit\nvýrobní plán" as UC3
+    usecase "Spustit\nvýrobní zakázku" as UC4
+    usecase "Monitorovat průběh\nvýrobní zakázky" as UC5
+    usecase "Stornovat\nvýrobní zakázku" as UC6
+    usecase "Vymazat\nvýrobní zakázku" as UC7
+
+    usecase "Ověřit kapacity\nvýrobních zařízení" as UC8
+    usecase "Ověřit připravenost\nvýrobního zařízení" as UC9
+    usecase "Zobrazit aktuální stav\nvýrobní zakázky" as UC10
+
+    ' keep single column inside section
+    UC1 -[hidden]-> UC2
+    UC2 -[hidden]-> UC3
+    UC3 -[hidden]-> UC4
+    UC4 -[hidden]-> UC5
+    UC5 -[hidden]-> UC6
+    UC6 -[hidden]-> UC7
+    UC7 -[hidden]-> UC8
+    UC8 -[hidden]-> UC9
+    UC9 -[hidden]-> UC10
+  }
+
+  package "Správa výrobních zařízení" {
+
+    usecase "Konfigurovat\nvýrobní zařízení" as UC11
+    usecase "Definovat operace\nvýrobního zařízení" as UC12
+
+    UC11 -[hidden]-> UC12
+  }
+
+  package "Analýzy a statistiky" {
+
+    usecase "Zobrazit grafy stavů\nvýrobních zařízení" as UC13
+    usecase "Analyzovat energetickou\nspotřebu výroby" as UC14
+    usecase "Získat data o stavech\nzařízení" as UC15
+    usecase "Získat energetická data" as UC16
+
+    UC13 -[hidden]-> UC14
+    UC14 -[hidden]-> UC15
+    UC15 -[hidden]-> UC16
+  }
+
+  ' keep packages stacked in one vertical column
+  UC10 -[hidden]-> UC11
+  UC12 -[hidden]-> UC13
+
+  ' =========================
+  ' <<include>> relationships
+  ' =========================
+  UC3 ..> UC2 : <<include>>
+  UC2 ..> UC8 : <<include>>
+  UC4 ..> UC9 : <<include>>
+
+  UC5 ..> UC10 : <<include>>
+  UC5 ..> UC13 : <<include>>
+
+  UC13 ..> UC15 : <<include>>
+  UC14 ..> UC16 : <<include>>
+}
+
+
+actor "Externí systém" as External
+
+
+Employee -[hidden]-> MES
+MES -[hidden]-> External
+
+Production --> UC1
+Production --> UC2
+Production --> UC3
+Production --> UC4
+Production --> UC5
+Production --> UC6
+Production --> UC7
+
+Maintenance --> UC11
+Maintenance --> UC12
+
+Employee --> UC13
+Employee --> UC14
+
+
+External --> UC15
+External --> UC16
+
+@enduml
+
+
+i cannot combine left to right in direction for parent and top to bottom direction just for the rectangle?
+
+Short answer: No — PlantUML does not support mixed layout directions in nested scopes.
+left to right direction and top to bottom direction are global graph layout hints for Graphviz, not scoped to containers like rectangle or package. When you place top to bottom direction inside rectangle MES, it does not create a local layout context; Graphviz still computes a single layout for the whole graph.
+That’s why your code:
+
+left to right direction
+rectangle MES {
+   top to bottom direction
+}
+does not actually isolate directions.
+Practical solution (what you already almost did)
+You must simulate local layout using constraints:
+1. Use global direction
+left to right direction
+2. Force vertical stacking inside the system
+Use hidden vertical links:
+UC1 -[hidden]-> UC2
+UC2 -[hidden]-> UC3
+3. Force column ordering
+Use hidden links between columns:
+Employee -[hidden]-> MES
+MES -[hidden]-> External
+This is exactly the correct technique in PlantUML.
+Cleaner trick (recommended for stable layouts)
+Instead of linking random elements, use dummy anchors to stabilize columns.
+Example:
+
+@startuml
+left to right direction
+
+actor "Zaměstnanec" as Employee
+actor "Externí systém" as External
+
+rectangle MES {
+  usecase UC1
+  usecase UC2
+}
+
+' invisible anchors
+() as LEFT
+() as MID
+() as RIGHT
+
+LEFT -[hidden]-> MID
+MID -[hidden]-> RIGHT
+
+Employee -[hidden]-> LEFT
+MES -[hidden]-> MID
+External -[hidden]-> RIGHT
+@enduml
+This forces:
+Actors  |  MES  |  System actors
+and prevents Graphviz from reordering things.
+Why PlantUML behaves like this
+PlantUML delegates layout to Graphviz DOT, which:
+Computes one directed graph
+Has one global rank direction (rankdir)
+Cannot nest rank directions.
+So containers (package, rectangle) are visual only, not layout contexts.
+✅ Your current approach (hidden edges + global direction) is actually the correct professional workaround used in most PlantUML diagrams.
+If you want, I can also show a much cleaner MES diagram version (~30% less code) that keeps the same layout but avoids many hidden links.
+
+write my code with dummy anchors to achieve this combined layout
+
+@startuml MES Use Case Diagram
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam actorStyle awesome
+
+' =========================
+' LEFT column actors
+' =========================
+actor "Zaměstnanec" as Employee
+actor "Produkce" as Production
+actor "Technologie" as Technology
+actor "Technické oddělení" as Maintenance
+
+Production -|> Employee
+Technology -|> Employee
+Maintenance -|> Employee
+
+' =========================
+' RIGHT column system actor
+' =========================
+actor "Externí systém" as External
+
+' =========================
+' Dummy anchors to stabilize 3 columns
+' =========================
+() " " as A_LEFT
+() " " as A_MID
+() " " as A_RIGHT
+
+A_LEFT -[hidden]-> A_MID
+A_MID  -[hidden]-> A_RIGHT
+
+Employee -[hidden]-> A_LEFT
+A_MID -[hidden]-> MES
+External -[hidden]-> A_RIGHT
+
+' =========================
+' System boundary (MIDDLE column)
+' =========================
+rectangle MES {
+
+  package "Správa výrobních zakázek" {
+
+    usecase "Vytvořit\nvýrobní zakázku" as UC1
+    usecase "Naplánovat\nvýrobní zakázky" as UC2
+    usecase "Spustit\nvýrobní plán" as UC3
+    usecase "Spustit\nvýrobní zakázku" as UC4
+    usecase "Monitorovat průběh\nvýrobní zakázky" as UC5
+    usecase "Stornovat\nvýrobní zakázku" as UC6
+    usecase "Vymazat\nvýrobní zakázku" as UC7
+
+    usecase "Ověřit kapacity\nvýrobních zařízení" as UC8
+    usecase "Ověřit připravenost\nvýrobního zařízení" as UC9
+    usecase "Zobrazit aktuální stav\nvýrobní zakázky" as UC10
+
+    ' keep single column inside section
+    UC1 -[hidden]-> UC2
+    UC2 -[hidden]-> UC3
+    UC3 -[hidden]-> UC4
+    UC4 -[hidden]-> UC5
+    UC5 -[hidden]-> UC6
+    UC6 -[hidden]-> UC7
+    UC7 -[hidden]-> UC8
+    UC8 -[hidden]-> UC9
+    UC9 -[hidden]-> UC10
+  }
+
+  package "Správa výrobních zařízení" {
+
+    usecase "Konfigurovat\nvýrobní zařízení" as UC11
+    usecase "Definovat operace\nvýrobního zařízení" as UC12
+
+    UC11 -[hidden]-> UC12
+  }
+
+  package "Analýzy a statistiky" {
+
+    usecase "Zobrazit grafy stavů\nvýrobních zařízení" as UC13
+    usecase "Analyzovat energetickou\nspotřebu výroby" as UC14
+    usecase "Získat data o stavech\nzařízení" as UC15
+    usecase "Získat energetická data" as UC16
+
+    UC13 -[hidden]-> UC14
+    UC14 -[hidden]-> UC15
+    UC15 -[hidden]-> UC16
+  }
+
+  ' keep packages stacked in one vertical column
+  UC10 -[hidden]-> UC11
+  UC12 -[hidden]-> UC13
+
+  ' =========================
+  ' <<include>> relationships
+  ' =========================
+  UC3 ..> UC2 : <<include>>
+  UC2 ..> UC8 : <<include>>
+  UC4 ..> UC9 : <<include>>
+
+  UC5 ..> UC10 : <<include>>
+  UC5 ..> UC13 : <<include>>
+
+  UC13 ..> UC15 : <<include>>
+  UC14 ..> UC16 : <<include>>
+}
+
+' =========================
+' Visible associations (LEFT -> MES)
+' =========================
+Production --> UC1
+Production --> UC2
+Production --> UC3
+Production --> UC4
+Production --> UC5
+Production --> UC6
+Production --> UC7
+
+Maintenance --> UC11
+Maintenance --> UC12
+
+Employee --> UC13
+Employee --> UC14
+
+' =========================
+' Visible associations (RIGHT -> MES)
+' =========================
+External --> UC15
+External --> UC16
+
+@enduml
+What changed vs your original:
+Added 3 dummy anchors A_LEFT / A_MID / A_RIGHT and hidden links between them to lock 3 columns.
+Anchored Employee to the left anchor, MES to the middle anchor, and External to the right anchor.
+Removed the ineffective top to bottom direction inside rectangle (vertical stacking is already enforced by your hidden links).
+
+the mes is still row
+
+
+Přemýšlení po dobu 26s
+Yep — what you’re seeing is Graphviz “ranking” the packages next to each other despite your vertical UC chains. The fix is to add dummy anchors inside MES and then force a downward hidden spine that ties the three packages together, while still keeping global left to right direction for the three columns.
+Use this version (it keeps your content, but adds anchors + a vertical “spine”):
+
+@startuml MES Use Case Diagram
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam actorStyle awesome
+
+' =========================
+' LEFT column actors
+' =========================
+actor "Zaměstnanec" as Employee
+actor "Produkce" as Production
+actor "Technologie" as Technology
+actor "Technické oddělení" as Maintenance
+
+Production -|> Employee
+Technology -|> Employee
+Maintenance -|> Employee
+
+' =========================
+' RIGHT column system actor
+' =========================
+actor "Externí systém" as External
+
+' =========================
+' Dummy anchors to lock 3 columns (LEFT | MID | RIGHT)
+' =========================
+() " " as COL_LEFT
+() " " as COL_MID
+() " " as COL_RIGHT
+
+COL_LEFT -[hidden]-> COL_MID
+COL_MID  -[hidden]-> COL_RIGHT
+
+Employee -[hidden]-> COL_LEFT
+External -[hidden]-> COL_RIGHT
+
+' =========================
+' System boundary (MIDDLE column)
+' =========================
+rectangle MES as MES {
+
+  ' --- internal anchors to force MES content into ONE vertical column ---
+  () " " as MES_TOP
+  () " " as MES_MID
+  () " " as MES_BOT
+
+  package "Správa výrobních zakázek" {
+
+    usecase "Vytvořit\nvýrobní zakázku" as UC1
+    usecase "Naplánovat\nvýrobní zakázky" as UC2
+    usecase "Spustit\nvýrobní plán" as UC3
+    usecase "Spustit\nvýrobní zakázku" as UC4
+    usecase "Monitorovat průběh\nvýrobní zakázky" as UC5
+    usecase "Stornovat\nvýrobní zakázku" as UC6
+    usecase "Vymazat\nvýrobní zakázku" as UC7
+    usecase "Ověřit kapacity\nvýrobních zařízení" as UC8
+    usecase "Ověřit připravenost\nvýrobního zařízení" as UC9
+    usecase "Zobrazit aktuální stav\nvýrobní zakázky" as UC10
+
+    ' single-column ordering (force DOWN explicitly)
+    UC1  -down[hidden]-> UC2
+    UC2  -down[hidden]-> UC3
+    UC3  -down[hidden]-> UC4
+    UC4  -down[hidden]-> UC5
+    UC5  -down[hidden]-> UC6
+    UC6  -down[hidden]-> UC7
+    UC7  -down[hidden]-> UC8
+    UC8  -down[hidden]-> UC9
+    UC9  -down[hidden]-> UC10
+  }
+
+  package "Správa výrobních zařízení" {
+
+    usecase "Konfigurovat\nvýrobní zařízení" as UC11
+    usecase "Definovat operace\nvýrobního zařízení" as UC12
+
+    UC11 -down[hidden]-> UC12
+  }
+
+  package "Analýzy a statistiky" {
+
+    usecase "Zobrazit grafy stavů\nvýrobních zařízení" as UC13
+    usecase "Analyzovat energetickou\nspotřebu výroby" as UC14
+    usecase "Získat data o stavech\nzařízení" as UC15
+    usecase "Získat energetická data" as UC16
+
+    UC13 -down[hidden]-> UC14
+    UC14 -down[hidden]-> UC15
+    UC15 -down[hidden]-> UC16
+  }
+
+  ' ===== Vertical "spine" that forces PACKAGES into a single column =====
+  MES_TOP -down[hidden]-> UC1
+  UC10   -down[hidden]-> MES_MID
+  MES_MID -down[hidden]-> UC11
+  UC12   -down[hidden]-> MES_BOT
+  MES_BOT -down[hidden]-> UC13
+
+  ' =========================
+  ' <<include>> relationships
+  ' =========================
+  UC3 ..> UC2 : <<include>>
+  UC2 ..> UC8 : <<include>>
+  UC4 ..> UC9 : <<include>>
+
+  UC5 ..> UC10 : <<include>>
+  UC5 ..> UC13 : <<include>>
+
+  UC13 ..> UC15 : <<include>>
+  UC14 ..> UC16 : <<include>>
+}
+
+' Anchor MES boundary into the MID column
+COL_MID -[hidden]-> MES
+
+' =========================
+' Visible associations (LEFT -> MES)
+' =========================
+Production --> UC1
+Production --> UC2
+Production --> UC3
+Production --> UC4
+Production --> UC5
+Production --> UC6
+Production --> UC7
+
+Maintenance --> UC11
+Maintenance --> UC12
+
+Employee --> UC13
+Employee --> UC14
+
+' =========================
+' Visible associations (RIGHT -> MES)
+' =========================
+External --> UC15
+External --> UC16
+
+@enduml
+What actually fixes “MES is still a row”
+-down[hidden]-> (not plain -[hidden]->) forces vertical ranking even with global left to right direction.
+The internal anchors MES_TOP / MES_MID / MES_BOT create a single vertical spine across packages, so Graphviz can’t place packages side-by-side.
+If you still get a “row” in your renderer, it’s usually because the renderer ignores some constraints; tell me which one you use (PlantText / Kroki / VS Code plugin / IntelliJ), and I’ll adjust the anchoring pattern for that engine.
+
+is there a setting of how to render the lines? they are generated crazy
+
+
+Yes. In PlantUML you can influence how connection lines are routed using skinparam linetype. This directly affects how Graphviz draws the edges.
+1. Orthogonal lines (usually best for UML diagrams)
+skinparam linetype ortho
+This forces 90° elbow connectors instead of curved/spline paths. It usually removes the “crazy spaghetti” routing.
+Example:
+
+@startuml
+left to right direction
+skinparam linetype ortho
+@enduml
+2. Polyline (less aggressive than default splines)
+skinparam linetype polyline
+This gives straight segments but not strict 90° angles.
+3. Default (spline)
+If you don't specify anything, Graphviz uses splines, which often produces messy curves when many edges exist.
+Equivalent to:
+
+skinparam linetype spline
+Recommended settings for large UC diagrams
+For your MES diagram, I would start with:
+skinparam linetype ortho
+skinparam shadowing false
+skinparam packageStyle rectangle
+This usually gives clean UML-style connectors.
+Extra trick (very useful for UC diagrams)
+You can force direction of arrows to avoid crossings:
+-right->
+-left->
+-up->
+-down->
+Example:
+UC5 -right-> UC13 : <<include>>
+instead of:
+UC5 ..> UC13
+This dramatically stabilizes layout.
+💡 Important limitation:
+Even with these settings, PlantUML still relies on Graphviz automatic routing, so very dense diagrams can still look messy.
+If you want, I can also show you the standard layout pattern used in software engineering courses for UC diagrams that keeps almost all arrows straight and prevents crossings, which would improve your MES diagram a lot.
+
+the line is going to some direction and than back to its target
+
+Yes — that behavior is coming from Graphviz edge routing, not directly from PlantUML. When the layout engine tries to avoid overlaps it sometimes produces paths that go away from the target and then back, especially when:
+many hidden edges constrain the layout
+edges connect distant nodes across packages
+the graph has conflicting direction hints
+There are a few practical fixes.
+1. Use orthogonal routing (most helpful)
+Add this near the top:
+skinparam linetype ortho
+This forces 90° routing, which usually prevents the “loop away then back” effect.
+Example:
+
+left to right direction
+skinparam linetype ortho
+2. Explicitly control arrow direction
+Instead of letting Graphviz decide:
+UC5 ..> UC13 : <<include>>
+force direction:
+UC5 -right-> UC13 : <<include>>
+or
+UC5 -down-> UC13 : <<include>>
+This often eliminates the weird detours.
+3. Avoid mixing too many hidden constraints
+You currently use many:
+-[hidden]->
+These create strong layout constraints. Too many can confuse Graphviz and cause strange routes.
+Typical stable pattern:
+
+hidden edges only for vertical stacking
+dummy anchors only for columns
+Avoid mixing both excessively.
+4. If the problem is still present
+Add:
+skinparam nodesep 60
+skinparam ranksep 60
+This increases spacing between elements, giving Graphviz more room to route lines cleanly.
+Example header I recommend for your diagram
+left to right direction
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 60
+skinparam shadowing false
+skinparam packageStyle rectangle
+If you'd like, I can also:
+rewrite your diagram to eliminate most hidden edges (making routing much cleaner)
+or show a layout technique used in professional UML diagrams that almost completely prevents these routing artifacts.
+
+Výrobní informační systém MES obsahuje několik kategorií funkcionalit. 1) Správu zakázek, kde je možné zakázku na výrobu produktu vytvořit, spustit, vytvořit plán spouštění a ten potom spustit, zakázku stornovat, vymazat a podrobně sledovat. V kategorii 2) Správa zdrojů je možné nakonfigurovat nový výrobní zdroj, definovat jeho operace a pomocí sledu operací definovat nový produkt. 3) kategorií jsou analýzy a statistiky, kde je možné zobrazit grafy stavů strojů (výrobních zdrojů), tedy poměr času kdy vyráběly, kdy byly v idle a kdy byly v chybovém stavu. Dále je možné provést analýzu energetické náročnosti. Odlišné přístupy mají tři kategorie uživatelů (v dané firmě oddělení): produkce (výrobní funkcionality), technologie (editace a zadávání nových produktů/postupů) a technické oddělení (editace a zadávání nových výrobních zařízení a jejich procesů)
+
+přepiš do bodů
+
+Funkcionality systému MES
+1. Správa výrobních zakázek
+vytvořit výrobní zakázku
+spustit výrobní zakázku
+vytvořit plán spouštění výrobních zakázek (výrobní plán)
+spustit výrobní plán
+stornovat výrobní zakázku
+vymazat výrobní zakázku
+sledovat průběh výrobní zakázky
+2. Správa výrobních zdrojů
+nakonfigurovat nový výrobní zdroj (stroj / pracoviště)
+definovat operace výrobního zdroje
+definovat nový produkt pomocí sledu operací
+3. Analýzy a statistiky
+zobrazit grafy stavů strojů (výrobních zdrojů), zejména:
+podíl času ve výrobě
+podíl času v nečinnosti (idle)
+podíl času v chybovém / poruchovém stavu
+provést analýzu energetické náročnosti výroby
+Kategorie uživatelů systému
+Produkce
+používá funkcionality pro správu a řízení výrobních zakázek
+Technologie
+provádí definici a úpravu produktů a technologických postupů
+Technické oddělení
+provádí konfiguraci výrobních zařízení a definici jejich operací
+
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+
+actor "Zaměstnanec" as Employee
+actor "Produkce" as Production
+actor "Technologie" as Technology
+actor "Technické oddělení" as Maintenance
+
+rectangle MES {
+
+  package "Správa výrobních zakázek" {
+
+    usecase "Vytvořit\nvýrobní zakázku" as UC1
+    usecase "Naplánovat\nvýrobní zakázky" as UC2
+    usecase "Spustit\nvýrobní plán" as UC3
+    usecase "Spustit\nvýrobní zakázku" as UC4
+    usecase "Monitorovat průběh\nvýrobní zakázky" as UC5
+    usecase "Stornovat\nvýrobní zakázku" as UC6
+    usecase "Vymazat\nvýrobní zakázku" as UC7
+
+    usecase "Ověřit kapacity\nvýrobních zařízení" as UC8
+    usecase "Ověřit připravenost\nvýrobního zařízení" as UC9
+    usecase "Zobrazit aktuální stav\nvýrobní zakázky" as UC10
+
+    ' keep single column inside section
+    UC1 -left[hidden]-> UC2
+    UC2 -left[hidden]-> UC3
+    UC3 -left[hidden]-> UC4
+    UC4 -left[hidden]-> UC5
+    UC5 -left[hidden]-> UC6
+    UC6 -left[hidden]-> UC7
+    UC7 -left[hidden]-> UC8
+    UC8 -left[hidden]-> UC9
+    UC9 -left[hidden]-> UC10
+  }
+
+  package "Správa výrobních zařízení" {
+
+    usecase "Konfigurovat\nvýrobní zařízení" as UC11
+    usecase "Definovat operace\nvýrobního zařízení" as UC12
+
+    UC11 -right[hidden]-> UC12
+  }
+
+  package "Analýzy a statistiky" {
+
+    usecase "Zobrazit grafy stavů\nvýrobních zařízení" as UC13
+    usecase "Analyzovat energetickou\nspotřebu výroby" as UC14
+    usecase "Získat data o stavech\nzařízení" as UC15
+    usecase "Získat energetická data" as UC16
+
+    UC13 -right[hidden]-> UC14
+    UC14 -right[hidden]-> UC15
+    UC15 -right[hidden]-> UC16
+  }
+
+  ' keep packages stacked in one vertical column
+  UC10 -left[hidden]-> UC11
+  UC12 -left[hidden]-> UC13
+
+  ' =========================
+  ' <<include>> relationships
+  ' =========================
+  UC3 ..> UC2 : <<include>>
+  UC2 ..> UC8 : <<include>>
+  UC4 ..> UC9 : <<include>>
+
+  UC5 ..> UC10 : <<include>>
+  UC5 ..> UC13 : <<include>>
+
+  UC13 ..> UC15 : <<include>>
+  UC14 ..> UC16 : <<include>>
+}
+
+
+Production -[hidden]- UC1
+Technology -[hidden]- UC1
+Maintenance -[hidden]- UC1
+Employee -[hidden]- UC1
+
+Production -right-> UC1
+Production -right-> UC2
+Production -right-> UC3
+Production -right-> UC4
+Production -right-> UC5
+Production -right-> UC6
+Production -right-> UC7
+
+Maintenance -right-> UC11
+Maintenance -right-> UC12
+
+
+
+actor "Externí systém" as External
+
+UC15 <-down- External
+UC16 <-down- External
+UC1 -[hidden]- External
+
+
+@enduml
+
+
+update according to the description -- users are wrong in the code and product managment is not in správa zdrojů. it needs to be exact as description
+
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+' =========================
+' Actors (exactly per description)
+' =========================
+actor "Produkce" as Production
+actor "Technologie" as Technology
+actor "Technické oddělení" as Maintenance
+
+rectangle MES {
+
+  ' =========================
+  ' 1) Správa zakázek
+  ' =========================
+  package "Správa výrobních zakázek" {
+
+    usecase "Vytvořit\nvýrobní zakázku" as UC_CreateOrder
+    usecase "Spustit\nvýrobní zakázku" as UC_StartOrder
+    usecase "Vytvořit\nvýrobní plán" as UC_CreatePlan
+    usecase "Spustit\nvýrobní plán" as UC_StartPlan
+    usecase "Stornovat\nvýrobní zakázku" as UC_CancelOrder
+    usecase "Vymazat\nvýrobní zakázku" as UC_DeleteOrder
+    usecase "Sledovat průběh\nvýrobní zakázky" as UC_TrackOrder
+
+    ' keep single column inside section
+    UC_CreateOrder -left[hidden]-> UC_StartOrder
+    UC_StartOrder  -left[hidden]-> UC_CreatePlan
+    UC_CreatePlan  -left[hidden]-> UC_StartPlan
+    UC_StartPlan   -left[hidden]-> UC_CancelOrder
+    UC_CancelOrder -left[hidden]-> UC_DeleteOrder
+    UC_DeleteOrder -left[hidden]-> UC_TrackOrder
+  }
+
+  ' =========================
+  ' 2) Správa zdrojů (ONLY equipment + operations, no product mgmt)
+  ' =========================
+  package "Správa výrobních zdrojů" {
+
+    usecase "Nakonfigurovat nový\nvýrobní zdroj" as UC_ConfigResource
+    usecase "Definovat operace\nvýrobního zdroje" as UC_DefineOps
+
+    UC_ConfigResource -right[hidden]-> UC_DefineOps
+  }
+
+  ' =========================
+  ' Product definition (moved OUT of Správa zdrojů)
+  ' =========================
+  package "Správa produktů a postupů" {
+
+    usecase "Definovat nový produkt\npomocí sledu operací" as UC_DefineProduct
+
+    ' (single item - no hidden chain needed)
+  }
+
+  ' =========================
+  ' 3) Analýzy a statistiky
+  ' =========================
+  package "Analýzy a statistiky" {
+
+    usecase "Zobrazit grafy stavů\nvýrobních zdrojů" as UC_ShowStateCharts
+    usecase "Provést analýzu\nenergetické náročnosti" as UC_EnergyAnalysis
+
+    UC_ShowStateCharts -right[hidden]-> UC_EnergyAnalysis
+  }
+
+  ' keep packages stacked in one vertical column
+  UC_TrackOrder -left[hidden]-> UC_ConfigResource
+  UC_DefineOps  -left[hidden]-> UC_DefineProduct
+  UC_DefineProduct -left[hidden]-> UC_ShowStateCharts
+
+}
+
+' =========================
+' Keep actors on the left
+' =========================
+Production -[hidden]- UC_CreateOrder
+Technology -[hidden]- UC_CreateOrder
+Maintenance -[hidden]- UC_CreateOrder
+
+' =========================
+' Associations (exactly per description)
+' Produkce: výrobní funkcionality (správa zakázek)
+' Technologie: nové produkty/postupy
+' Technické odd.: nová zařízení a jejich procesy/operace
+' =========================
+
+' Produkce -> Správa zakázek
+Production -right-> UC_CreateOrder
+Production -right-> UC_StartOrder
+Production -right-> UC_CreatePlan
+Production -right-> UC_StartPlan
+Production -right-> UC_CancelOrder
+Production -right-> UC_DeleteOrder
+Production -right-> UC_TrackOrder
+
+' Technologie -> produkty/postupy
+Technology -right-> UC_DefineProduct
+
+' Technické oddělení -> zdroje a jejich operace
+Maintenance -right-> UC_ConfigResource
+Maintenance -right-> UC_DefineOps
+
+@enduml
+What I changed to match the exact wording of the assignment:
+Removed Zaměstnanec (not in description).
+Removed Naplánovat výrobní zakázky wording and replaced it with the described “vytvořit plán spouštění a ten potom spustit” → Vytvořit výrobní plán + Spustit výrobní plán.
+Moved product definition out of “Správa zdrojů” into its own section “Správa produktů a postupů” (because the description treats it as a different responsibility and it belongs to Technologie).
+Removed the Externí systém actor (not mentioned in the description; if you still want it, we can add it back explicitly as an assumption).
+
+dle textu máme tři kategorie namísto 4
+
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+' =========================
+' Actors (exactly 3 categories per text)
+' =========================
+actor "Produkce" as Production
+actor "Technologie" as Technology
+actor "Technické oddělení" as Maintenance
+
+rectangle MES {
+
+  ' =========================
+  ' 1) Správa zakázek
+  ' =========================
+  package "Správa výrobních zakázek" {
+
+    usecase "Vytvořit\nvýrobní zakázku" as UC_CreateOrder
+    usecase "Spustit\nvýrobní zakázku" as UC_StartOrder
+    usecase "Vytvořit plán\nspouštění zakázek" as UC_CreatePlan
+    usecase "Spustit plán\nspouštění zakázek" as UC_StartPlan
+    usecase "Stornovat\nvýrobní zakázku" as UC_CancelOrder
+    usecase "Vymazat\nvýrobní zakázku" as UC_DeleteOrder
+    usecase "Podrobně sledovat\nvýrobní zakázku" as UC_TrackOrder
+
+    ' keep single column inside section
+    UC_CreateOrder -left[hidden]-> UC_StartOrder
+    UC_StartOrder  -left[hidden]-> UC_CreatePlan
+    UC_CreatePlan  -left[hidden]-> UC_StartPlan
+    UC_StartPlan   -left[hidden]-> UC_CancelOrder
+    UC_CancelOrder -left[hidden]-> UC_DeleteOrder
+    UC_DeleteOrder -left[hidden]-> UC_TrackOrder
+  }
+
+  ' =========================
+  ' 2) Správa zdrojů (incl. product definition per text)
+  ' =========================
+  package "Správa zdrojů" {
+
+    usecase "Nakonfigurovat nový\nvýrobní zdroj" as UC_ConfigResource
+    usecase "Definovat operace\nvýrobního zdroje" as UC_DefineOps
+    usecase "Pomocí sledu operací\ndefinovat nový produkt" as UC_DefineProduct
+
+    UC_ConfigResource -right[hidden]-> UC_DefineOps
+    UC_DefineOps      -right[hidden]-> UC_DefineProduct
+  }
+
+  ' =========================
+  ' 3) Analýzy a statistiky
+  ' =========================
+  package "Analýzy a statistiky" {
+
+    usecase "Zobrazit grafy stavů\nstrojů (zdrojů)\n(výroba / idle / chyba)" as UC_ShowStateCharts
+    usecase "Provést analýzu\nenergetické náročnosti" as UC_EnergyAnalysis
+
+    UC_ShowStateCharts -right[hidden]-> UC_EnergyAnalysis
+  }
+
+  ' keep packages stacked in one vertical column
+  UC_TrackOrder -left[hidden]-> UC_ConfigResource
+  UC_DefineProduct -left[hidden]-> UC_ShowStateCharts
+}
+
+' =========================
+' Keep actors on the left
+' =========================
+Production -[hidden]- UC_CreateOrder
+Technology -[hidden]- UC_CreateOrder
+Maintenance -[hidden]- UC_CreateOrder
+
+' =========================
+' Associations (exactly per text)
+' =========================
+
+' Produkce -> výrobní funkcionality (správa zakázek)
+Production -right-> UC_CreateOrder
+Production -right-> UC_StartOrder
+Production -right-> UC_CreatePlan
+Production -right-> UC_StartPlan
+Production -right-> UC_CancelOrder
+Production -right-> UC_DeleteOrder
+Production -right-> UC_TrackOrder
+
+' Technologie -> editace/zadávání nových produktů/postupů
+Technology -right-> UC_DefineProduct
+
+' Technické oddělení -> editace/zadávání nových výrobních zařízení a jejich procesů
+Maintenance -right-> UC_ConfigResource
+Maintenance -right-> UC_DefineOps
+
+' (Optional access to analytics was not explicitly assigned to a department in the text,
+' so I am leaving it unassigned to avoid inventing requirements.)
+@enduml
+

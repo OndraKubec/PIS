@@ -1,0 +1,104 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+
+actor "Zaměstnanec" as Employee
+actor "Produkce" as Production
+actor "Technologie" as Technology
+actor "Technické oddělení" as Maintenance
+
+rectangle MES {
+
+  package "Správa výrobních zakázek" {
+
+    usecase "Vytvořit\nvýrobní zakázku" as UC1
+    usecase "Naplánovat\nvýrobní zakázky" as UC2
+    usecase "Spustit\nvýrobní plán" as UC3
+    usecase "Spustit\nvýrobní zakázku" as UC4
+    usecase "Monitorovat průběh\nvýrobní zakázky" as UC5
+    usecase "Stornovat\nvýrobní zakázku" as UC6
+    usecase "Vymazat\nvýrobní zakázku" as UC7
+
+    usecase "Ověřit kapacity\nvýrobních zařízení" as UC8
+    usecase "Ověřit připravenost\nvýrobního zařízení" as UC9
+    usecase "Zobrazit aktuální stav\nvýrobní zakázky" as UC10
+
+    ' keep single column inside section
+    UC1 -left[hidden]-> UC2
+    UC2 -left[hidden]-> UC3
+    UC3 -left[hidden]-> UC4
+    UC4 -left[hidden]-> UC5
+    UC5 -left[hidden]-> UC6
+    UC6 -left[hidden]-> UC7
+    UC7 -left[hidden]-> UC8
+    UC8 -left[hidden]-> UC9
+    UC9 -left[hidden]-> UC10
+  }
+
+  package "Správa výrobních zařízení" {
+
+    usecase "Konfigurovat\nvýrobní zařízení" as UC11
+    usecase "Definovat operace\nvýrobního zařízení" as UC12
+
+    UC11 -right[hidden]-> UC12
+  }
+
+  package "Analýzy a statistiky" {
+
+    usecase "Zobrazit grafy stavů\nvýrobních zařízení" as UC13
+    usecase "Analyzovat energetickou\nspotřebu výroby" as UC14
+    usecase "Získat data o stavech\nzařízení" as UC15
+    usecase "Získat energetická data" as UC16
+
+    UC13 -right[hidden]-> UC14
+    UC14 -right[hidden]-> UC15
+    UC15 -right[hidden]-> UC16
+  }
+
+  ' keep packages stacked in one vertical column
+  UC10 -left[hidden]-> UC11
+  UC12 -left[hidden]-> UC13
+
+  ' =========================
+  ' <<include>> relationships
+  ' =========================
+  UC3 ..> UC2 : <<include>>
+  UC2 ..> UC8 : <<include>>
+  UC4 ..> UC9 : <<include>>
+
+  UC5 ..> UC10 : <<include>>
+  UC5 ..> UC13 : <<include>>
+
+  UC13 ..> UC15 : <<include>>
+  UC14 ..> UC16 : <<include>>
+}
+
+
+Production -[hidden]- UC1
+Technology -[hidden]- UC1
+Maintenance -[hidden]- UC1
+Employee -[hidden]- UC1
+
+Production -right-> UC1
+Production -right-> UC2
+Production -right-> UC3
+Production -right-> UC4
+Production -right-> UC5
+Production -right-> UC6
+Production -right-> UC7
+
+Maintenance -right-> UC11
+Maintenance -right-> UC12
+
+
+
+actor "Externí systém" as External
+
+UC15 <-down- External
+UC16 <-down- External
+UC1 -[hidden]- External
+
+
+@enduml
