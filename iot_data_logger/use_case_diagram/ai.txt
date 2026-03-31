@@ -1,0 +1,596 @@
+
+Proveď lexikální analýzu následujícího textu.
+
+The IoT Data Logger system interacts with three primary actors: Admin, User, and Device. Each actor represents an external entity that communicates with the system in order to perform specific tasks related to data collection, management, and analysis.
+The Admin actor represents a privileged system user responsible for the administration and configuration of the system. The administrator manages user accounts and connected IoT devices to ensure the system operates correctly. Through the User Management use case, the Admin can create, modify, or delete user accounts and manage their permissions. Through the Device Management use case, the Admin can register new IoT devices, configure their parameters, monitor their status, and remove devices that are no longer needed. These administrative functions allow the system infrastructure and access control to be maintained properly.
+The User actor represents a standard user of the system who primarily interacts with collected data. The user accesses the Visualize Data use case, which allows them to view and analyze measurement data that has been collected by IoT devices. Within this functionality, the user can select a device, specify a time range, and display the data in graphical or tabular form. Before the system allows the user to access visualization features, the Authentication Check use case is performed. This ensures that the user is properly authenticated and authorized to access the requested data.
+The Device actor represents an external IoT sensor or measurement unit connected to the system. Devices interact with the system through the Data Logging use case. In this process, devices send measured data to the system, which receives the data, validates it, and stores it in a database for later use. This stored data becomes available for visualization and further analysis by system users.
+In addition to viewing data, users may also export the collected measurements using the Export Data use case. This functionality allows users to download selected datasets in formats such as CSV or JSON for further external processing or archiving. The export functionality is modeled as an extension of the Visualize Data use case, meaning that exporting data is an optional action that can be performed after or during the data visualization process.
+Together, these actors and use cases define the core functionality of the IoT Data Logger system, which includes user administration, device configuration, automated data collection from IoT devices, secure access to stored data, data visualization, and optional export of measurement results.
+
+1) Použij následující pravidla pro práci s výchozím textem a udělej jeho analýzu. Vypiš podstatná jména a uveď jejich absolutní četnost výskytu - zahrnuj synonyma
+
+Filter out rules
+W - wide (e.g. system, means, parameters, etc.)
+V - vague, indefinite (e.g. the first, case, equipment, etc.)
+S - synonymous (and also all tokens of one linguistic type)
+D Class name determinant (specifies the name of the class, e.g. screw is determinant of the class conveyor)
+I - Irrelevant (not important for the given model)
+P - property (property of any class is shifted to the given class as a property)
+A - association (is shifted to the association's list)
+O - operation (of any class is shifted to the given class as an operation)
+Vyhoď větné konstrukty.
+výčet je kandidát na enum a nikoliv název třídy
+
+2) vyfiltruj a otaguj jednotlivými písmeny
+
+3) Vyber vhodné kandidáty na názvy tříd
+
+Vstupem je uvedený text. Výstupem jsou názvy tříd.
+
+Below is a structured lexical analysis of the provided specification text according to the requested methodology used in object-oriented analysis (OOA).
+The procedure follows these phases:
+
+Extraction of nouns and absolute frequency
+Filtering and tagging using the rules (W, V, S, D, I, P, A, O)
+Selection of candidate class names
+Sentence constructs and verbs are removed. Enumeration items are considered enum candidates rather than classes.
+1. Lexical extraction – nouns with absolute frequency
+Synonyms and linguistic variants were merged into one token.
+Noun (normalized)	Absolute frequency
+system	15
+data	12
+user	9
+device	8
+use case	7
+actor	6
+admin / administrator	4
+measurement	3
+visualization	3
+functionality	3
+account	2
+parameter	2
+status	2
+database	2
+analysis	2
+export	2
+authentication	2
+access	2
+process	2
+configuration	1
+permission	1
+infrastructure	1
+control	1
+sensor	1
+unit	1
+range	1
+form	1
+dataset	1
+format	1
+result	1
+2. Filtering and tagging
+Legend of tags:
+Tag	Meaning
+W	Wide / overly generic
+V	Vague
+S	Synonym merged
+D	Class name determinant
+I	Irrelevant
+P	Property
+A	Association
+O	Operation
+Tagged lexical set
+Token	Freq	Tag	Reason
+system	15	W	global concept
+data	12	W	generic
+user	9		strong domain entity
+device	8		domain entity
+use case	7	I	modeling artifact
+actor	6	I	UML concept
+admin / administrator	4	S	synonym of user role
+measurement	3	P	property of data
+visualization	3	O	operation
+functionality	3	V	vague
+account	2		potential entity
+parameter	2	P	device property
+status	2	P	property
+database	2	I	implementation detail
+analysis	2	O	operation
+export	2	O	operation
+authentication	2	O	process
+access	2	O	action
+process	2	V	vague
+configuration	1	O	operation
+permission	1	P	attribute of account
+infrastructure	1	W	too general
+control	1	W	generic
+sensor	1	D	determinant of device
+unit	1	D	determinant
+range	1	P	property
+form	1	P	property
+dataset	1	D	specialization of data
+format	1	P	property
+result	1	P	property
+3. Filtering by rules
+Remove:
+W (system, data, infrastructure, control)
+V (functionality, process)
+I (use case, actor, database)
+O (export, authentication, visualization, analysis, configuration, access)
+P (parameter, permission, range, status, format, etc.)
+S merged tokens
+D determinants kept only if they help naming
+Remaining domain entities:
+Candidate	Reason
+User	system participant
+Admin	specialized user role
+Device	IoT entity
+Account	user management entity
+Measurement	stored data object
+Dataset	exported data set
+Sensor	device specialization
+4. Enum candidates (enumerations)
+From lists in the text (not classes):
+Enum candidate	Values
+ExportFormat	CSV, JSON
+VisualizationType	Graphical, Tabular
+5. Final candidate class names
+The resulting candidate classes for the IoT Data Logger domain model:
+User
+Admin
+Account
+Device
+Sensor
+Measurement
+Dataset
+✅ These classes correspond well with the domain structure:
+User
+ └─ Admin
+
+Device
+ └─ Sensor
+
+Measurement
+Dataset
+Account
+If you want, I can also show the next step typically done in this assignment:
+derive a UML class diagram from these candidates
+identify attributes and associations extracted from the same text.
+
+Validate your results like word count and word type assignement. To validated results assign atributes to classes
+
+
+Přemýšlení po dobu 2m 8s
+You are right to ask for validation. My previous counts were too rough. Below is a validated pass with corrected word frequencies, corrected tag assignment, and then attributes assigned to the selected classes.
+1. Validated lexical counts
+I normalized singular/plural and merged explicit synonyms where appropriate.
+Normalized noun	Validated count	Note
+system	13	generic container term
+data	20	too broad alone
+user	15	includes user, users
+device	12	includes device, devices
+use case	8	includes use case, use cases
+actor	6	includes actor, actors
+admin / administrator	5	merged synonym
+visualization / visualize	6	nominalized action, not a class
+measurement	4	includes measurement, measurements
+functionality	4	vague
+export	4	action
+access	4	action / association context
+account	2	includes accounts
+analysis	2	action
+process	2	vague
+configuration	2	action / administrative activity
+authentication	1	operation/process
+parameter	1	property
+status	1	property
+permission	1	property
+database	1	implementation detail
+infrastructure	1	too wide
+control	1	too wide
+sensor	1	determinant / subtype hint
+unit	1	determinant, too generic alone
+range	1	property
+form	1	property
+dataset	1	possible class, but weak support
+format	1	enum/property
+result	1	property/output
+entity	1	too generic
+task	1	vague
+So yes: the earlier counts for system, data, user, device were understated.
+2. Validated word-type/tag assignment
+Using your rules:
+W = wide
+V = vague
+S = synonym
+D = determinant
+I = irrelevant for class model
+P = property
+A = association
+O = operation
+Token	Count	Tag	Validation
+system	13	W	too broad, not a domain class
+data	20	W	broad mass noun; better refined into Measurement / LogRecord
+user	15		strong class candidate
+device	12		strong class candidate
+use case	8	I	UML analysis artifact, not domain class
+actor	6	I	UML artifact
+admin / administrator	5	S	synonym merged; role/specialization of User
+visualization / visualize	6	O	system action, not class
+measurement	4		strong class candidate
+functionality	4	V	vague
+export	4	O	operation
+access	4	A/O	relation/action, not stable class
+account	2		valid class candidate
+analysis	2	O	action
+process	2	V	vague
+configuration	2	O	operation
+authentication	1	O	operation/process
+parameter	1	P	property of Device
+status	1	P	property of Device
+permission	1	P	property of Account/User/Admin
+database	1	I	implementation detail
+infrastructure	1	W	too broad
+control	1	W	too broad
+sensor	1	D	determinant of Device subtype
+unit	1	D/V	too generic alone
+range	1	P	query/filter property
+form	1	P	output form
+dataset	1		weak but acceptable candidate
+format	1	P / enum	CSV, JSON are enum values
+result	1	P	output property
+entity	1	W/V	generic
+task	1	V	vague
+3. Refined class candidates
+After validation, the best class candidates are:
+User
+Admin
+Account
+Device
+Measurement
+Dataset (optional / weaker)
+Sensor (optional as subtype of Device, not mandatory)
+Better final set for the class model
+If the goal is a clean UML class diagram, I would keep:
+User
+Admin
+Account
+Device
+Measurement
+And optionally:
+Dataset
+Sensor
+4. Attribute assignment to classes
+Now to the important validation step: a noun is more likely to be a real class if it can carry its own attributes and relations.
+Class: User
+Why valid: independent domain entity, appears often, performs actions, owns access context.
+Possible attributes
+
+userId
+name
+email
+role
+authenticated
+authorized
+Notes
+role may distinguish standard user vs admin.
+If Admin is modeled as subclass, role may become unnecessary.
+Class: Admin (specialization of User)
+Why valid: semantically distinct from User; has privileged behavior.
+Possible attributes
+
+adminLevel
+managementScope
+Better modeling
+Often better as inheritance: Admin extends User
+Permissions can also be inherited from Account
+Class: Account
+Why valid: “user accounts” are explicitly managed; has stable identity and properties.
+Possible attributes
+
+accountId
+username
+passwordHash
+permission
+isActive
+createdAt
+Notes
+permission clearly belongs here as a property.
+Authentication is an operation over Account, not a class.
+Class: Device
+Why valid: very strong domain object; repeatedly referenced; has concrete properties.
+Possible attributes
+
+deviceId
+name
+status
+parameters
+registrationDate
+lastSeen
+deviceType
+Validation
+status and parameters clearly map here as attributes.
+This confirms Device as a real class.
+Class: Measurement
+Why valid: more concrete than generic “data”; can be stored, visualized, exported.
+Possible attributes
+
+measurementId
+timestamp
+value
+unit
+validationState
+sourceDeviceId
+Validation
+This class absorbs generic “data” into something modelable.
+unit is better an attribute here than a standalone class.
+Class: Dataset (optional)
+Why valid: appears in export context as a selected collection of measurements.
+Possible attributes
+
+datasetId
+name
+timeRange
+format
+createdAt
+Notes
+This is weaker than Measurement.
+It is useful only if exported groups of measurements are explicitly modeled.
+Class: Sensor (optional subtype of Device)
+Why valid: mentioned as “IoT sensor or measurement unit”; can refine Device.
+Possible attributes
+
+sensorType
+precision
+samplingRate
+Best modeling
+Usually Sensor is a subtype of Device, not a separate peer class.
+5. Which nouns became attributes instead of classes
+These were correctly demoted:
+status → attribute of Device
+parameters → attribute of Device
+permission → attribute of Account or Admin
+range → attribute of Dataset or query parameter of visualization/export
+format → attribute or enum of Dataset/Export
+result → derived output, not class
+unit → attribute of Measurement
+authenticated, authorized → state/attributes of User/Account
+6. Which nouns became operations instead of classes
+These should not be classes:
+visualization
+export
+authentication
+analysis
+configuration
+They correspond to system behavior, for example:
+visualizeData()
+exportData(format)
+authenticate()
+analyzeData()
+configureDevice()
+7. Final validated output: class names
+Strong final class names
+User
+Admin
+Account
+Device
+Measurement
+Optional classes
+Dataset
+Sensor
+8. Recommended final UML-oriented interpretation
+A clean result would be:
+User
+Admin : User
+Account
+Device
+Measurement
+With:
+Device.status
+Device.parameters
+Account.permission
+Measurement.unit
+Measurement.timestamp
+Measurement.value
+And optionally:
+Dataset.format
+Dataset.timeRange
+So after validation, the best final answer is not the longer list from before, but this reduced and stronger set:
+User, Admin, Account, Device, Measurement
+
+If you want, I can now turn this directly into a final UML class diagram proposal with attributes and associations.
+
+Return list of words divided into operation relationships and structural relationships
+
+In lexical analysis for object-oriented modeling, verbs and verbal nouns typically map to operations, while nouns that express interactions or links between entities often map to relationships (associations). Below is a validated classification based on the provided text.
+1. Operation-related words
+These correspond to system behaviors or methods that classes perform.
+They usually derive from verbs or verbal nouns.
+Word / Phrase	Type	Notes
+create	operation	user/account management
+modify	operation	user/account management
+delete	operation	user/account management
+manage	operation	administration
+register	operation	device lifecycle
+configure	operation	device configuration
+monitor	operation	device monitoring
+remove	operation	device lifecycle
+access	operation	system access
+authenticate / authentication	operation	security process
+authorize	operation	security process
+select	operation	visualization step
+specify	operation	selecting time range
+display	operation	visualization
+analyze	operation	data analysis
+visualize / visualization	operation	data viewing
+export	operation	data export
+download	operation	file transfer
+send	operation	device data transfer
+receive	operation	system data intake
+validate	operation	data verification
+store	operation	persistence
+collect	operation	data acquisition
+These operations are typically implemented as methods of classes such as:
+User
+Admin
+Device
+Measurement
+Account
+2. Relationship-related words
+These indicate associations between entities, often expressed as links or ownership.
+Word / Phrase	Relationship type	Example
+interacts with	association	Device ↔ System
+communicates with	association	Actor ↔ System
+manages	association	Admin → UserAccount
+connects to	association	Device → System
+sends data to	association	Device → System
+receives data from	association	System ← Device
+stores in	association	Measurement → Database
+belongs to	association	Measurement → Device
+accessed by	association	Data → User
+performed by	association	UseCase → Actor
+configured by	association	Device → Admin
+monitored by	association	Device → Admin
+visualized by	association	Measurement → User
+exported by	association	Dataset → User
+These relationships typically translate into UML associations such as:
+Admin manages UserAccount
+Device produces Measurement
+User visualizes Measurement
+User exports Dataset
+3. Structural relationships (inheritance / specialization)
+Some relationships imply class hierarchy rather than simple association.
+Word	Relationship	Example
+represents	classification	Admin is a User
+type of	specialization	Sensor is a Device
+role	specialization	Admin role of User
+Resulting structure:
+User
+ └─ Admin
+
+Device
+ └─ Sensor
+4. Final categorized lists
+Operations
+create, modify, delete, manage, register, configure, monitor, remove, access, authenticate, authorize, select, specify, display, analyze, visualize, export, download, send, receive, validate, store, collect
+Structural / association relationships
+interacts with, communicates with, manages, connects to, sends data to, receives data from, stores in, belongs to, accessed by, performed by, configured by, monitored by, visualized by, exported by
+Structural hierarchy
+represents, type of, role
+If you want, I can also show the next analytical step typically required in software engineering assignments: mapping these operations and relationships directly into a UML class diagram (methods + associations).
+
+make class diagram in plant uml
+
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+
+class User {
+  +userId: int
+  +name: string
+  +email: string
+  +authenticated: bool
+  +authorized: bool
+}
+
+class Admin {
+  +adminLevel: int
+  +managementScope: string
+}
+
+class Account {
+  +accountId: int
+  +username: string
+  +passwordHash: string
+  +permission: string
+  +isActive: bool
+  +createdAt: datetime
+}
+
+class Device {
+  +deviceId: int
+  +name: string
+  +status: string
+  +parameters: string
+  +registrationDate: datetime
+  +lastSeen: datetime
+  +deviceType: string
+}
+
+class Measurement {
+  +measurementId: int
+  +timestamp: datetime
+  +value: float
+  +unit: string
+  +validationState: string
+}
+
+class Dataset {
+  +datasetId: int
+  +name: string
+  +timeRange: string
+  +format: string
+  +createdAt: datetime
+}
+
+Admin --|> User
+
+User "1" -- "1" Account : owns
+Device "1" -- "0..*" Measurement : produces
+User "1" -- "0..*" Measurement : views
+User "1" -- "0..*" Dataset : exports
+Dataset "1" -- "1..*" Measurement : contains
+Admin "1" -- "0..*" Device : manages
+Admin "1" -- "0..*" Account : manages
+
+@enduml
+If you want a stricter version derived only from the strongest classes, use this reduced diagram:
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+
+class User {
+  +userId: int
+  +name: string
+  +email: string
+  +authenticated: bool
+  +authorized: bool
+}
+
+class Admin {
+  +adminLevel: int
+}
+
+class Account {
+  +accountId: int
+  +username: string
+  +passwordHash: string
+  +permission: string
+  +isActive: bool
+}
+
+class Device {
+  +deviceId: int
+  +name: string
+  +status: string
+  +parameters: string
+}
+
+class Measurement {
+  +measurementId: int
+  +timestamp: datetime
+  +value: float
+  +unit: string
+  +validationState: string
+}
+
+Admin --|> User
+User "1" -- "1" Account : owns
+Admin "1" -- "0..*" Account : manages
+Admin "1" -- "0..*" Device : manages
+Device "1" -- "0..*" Measurement : sends
+User "1" -- "0..*" Measurement : visualizes
+
+@enduml

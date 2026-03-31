@@ -1,0 +1,57 @@
+@startuml
+skinparam linetype ortho
+
+
+entity "Courier" as e1 {
+   id: int PK
+   --
+}
+
+
+entity "Vehicle" as e2 {
+   id: int PK
+   --
+}
+
+
+entity "Order" as e3 {
+   id: int PK
+   --
+   customer_id: int FK
+   courier_id: int FK
+   restaurant_id: int FK
+}
+
+
+entity "Customer" as e4 {
+   id: int PK
+   --
+}
+
+entity "VehicleUsage" as e5 {
+   id: int PK
+   --
+   courier_id: int FK
+   vehicle_id: int FK
+
+   start: datetime
+   end: datetime
+   
+}
+
+entity "Restaurant" as e6 {
+   id: int PK
+   --
+}
+
+e6||--o{e3
+
+
+e1|o--o{e3
+e4||--o{e3
+
+
+e1||--o{e5
+e2||--o{e5
+
+@enduml

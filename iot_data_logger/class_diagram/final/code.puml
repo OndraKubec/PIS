@@ -1,0 +1,106 @@
+@startuml
+
+class Entity {
+  - name
+  - permissions
+  - roles
+
+
+  + create()
+  + has_role()
+  + has_permission()
+  + delete()
+  + update()
+  + validate()
+  + get()
+}
+
+class User {
+  - password
+  - email
+
+  + login()
+}
+
+class Device {
+  - type
+  - tags
+
+  + update_type()
+  + update_tags()
+
+}
+
+class Role {
+  - name
+  - permissions
+
+  + create_role()
+  + delete_role()
+  + update_permissions()
+}
+
+class Permission {
+  - name
+
+  + create_permission()
+  + delete_permission()
+}
+
+class Groups {
+  - user
+  - devices
+
+  + create_group()
+  + update_users()
+  + update_devices()
+}
+
+class Measurement {
+  - timestamp
+  - value
+
+  + create_measurement()
+  + delete_measurement()
+}
+
+class Timeseries {
+  - key
+  - measurements
+
+  + add_measurement()
+  + delete_measurement()
+}
+
+class "IoT Data Logger" as IoTDataLogger {
+  - users
+  - devices
+  - timeseries
+
+  + list_users()
+  + list_devices()
+  + list_timeseries()
+}
+
+
+Entity <|-- User
+Entity <|-- Device
+
+Role --> Permission : "has"
+Device --> Measurement : "creates"
+
+Timeseries --> Measurement : "has"
+
+Entity --> Role : "has"
+Entity --> Permission : "has"
+
+
+Groups --> User : "consists of"
+Groups --> Device : "consists of"
+
+
+IoTDataLogger --> User : "has"
+IoTDataLogger --> Device : "has"
+IoTDataLogger --> Timeseries : "has"
+
+@enduml

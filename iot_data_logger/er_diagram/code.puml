@@ -1,0 +1,118 @@
+@startuml
+hide methods
+hide stereotypes
+skinparam linetype ortho
+
+entity "users" as users {
+  * id : BIGINT <<PK>>
+  --
+  name : VARCHAR
+  email : VARCHAR <<UNIQUE>>
+  password_hash : VARCHAR
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity "devices" as devices {
+  * id : BIGINT <<PK>>
+  --
+  name : VARCHAR
+  device_type : VARCHAR
+  tags : TEXT
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity "roles" as roles {
+  * id : BIGINT <<PK>>
+  --
+  name : VARCHAR <<UNIQUE>>
+}
+
+entity "permissions" as permissions {
+  * id : BIGINT <<PK>>
+  --
+  name : VARCHAR <<UNIQUE>>
+}
+
+entity "users_roles" as users_roles {
+  * user_id : BIGINT <<PK, FK>>
+  * role_id : BIGINT <<PK, FK>>
+}
+
+entity "devices_roles" as devices_roles {
+  * device_id : BIGINT <<PK, FK>>
+  * role_id : BIGINT <<PK, FK>>
+}
+
+entity "users_permissions" as users_permissions {
+  * user_id : BIGINT <<PK, FK>>
+  * permission_id : BIGINT <<PK, FK>>
+}
+
+entity "devices_permissions" as devices_permissions {
+  * device_id : BIGINT <<PK, FK>>
+  * permission_id : BIGINT <<PK, FK>>
+}
+
+entity "roles_permissions" as roles_permissions {
+  * role_id : BIGINT <<PK, FK>>
+  * permission_id : BIGINT <<PK, FK>>
+}
+
+entity "groups" as groups {
+  * id : BIGINT <<PK>>
+  --
+  name : VARCHAR
+}
+
+entity "groups_users" as groups_users {
+  * group_id : BIGINT <<PK, FK>>
+  * user_id : BIGINT <<PK, FK>>
+}
+
+entity "groups_devices" as groups_devices {
+  * group_id : BIGINT <<PK, FK>>
+  * device_id : BIGINT <<PK, FK>>
+}
+
+entity "timeseries" as timeseries {
+  * id : BIGINT <<PK>>
+  --
+  key : VARCHAR <<UNIQUE>>
+  device_id : BIGINT <<FK>>
+}
+
+entity "measurements" as measurements {
+  * id : BIGINT <<PK>>
+  --
+  timeseries_id : BIGINT <<FK>>
+  timestamp : TIMESTAMP
+  value : DECIMAL
+}
+
+users ||--o{ users_roles
+roles ||--o{ users_roles
+
+devices ||--o{ devices_roles
+roles ||--o{ devices_roles
+
+users ||--o{ users_permissions
+permissions ||--o{ users_permissions
+
+devices ||--o{ devices_permissions
+permissions ||--o{ devices_permissions
+
+roles ||--o{ roles_permissions
+permissions ||--o{ roles_permissions
+
+groups ||--o{ groups_users
+users ||--o{ groups_users
+
+groups ||--o{ groups_devices
+devices ||--o{ groups_devices
+
+devices ||--o{ timeseries
+timeseries ||--o{ measurements
+
+@enduml
