@@ -1,0 +1,27 @@
+@startuml
+title Activity Diagram - Device Measurement
+
+start
+
+:Self check;
+
+if (Tests passed) then (Yes)
+    :Init counter;
+
+    repeat
+        if (Counter > N) then (Yes)
+            :Send data to API;
+            :Reset counter;
+        else (No)
+            :Counter++;
+            :Measure;
+        endif
+    repeat while ()
+
+else (No)
+    stop
+endif
+
+stop
+
+@enduml

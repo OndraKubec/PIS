@@ -72,15 +72,6 @@ class Timeseries {
   + delete_measurement()
 }
 
-class "IoT Data Logger" as IoTDataLogger {
-  - users
-  - devices
-  - timeseries
-
-  + list_users()
-  + list_devices()
-  + list_timeseries()
-}
 
 
 Entity <|-- User
@@ -97,10 +88,5 @@ Entity --> Permission : "has"
 
 Groups --> User : "consists of"
 Groups --> Device : "consists of"
-
-
-IoTDataLogger --> User : "has"
-IoTDataLogger --> Device : "has"
-IoTDataLogger --> Timeseries : "has"
 
 @enduml

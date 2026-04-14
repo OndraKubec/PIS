@@ -1,0 +1,68 @@
+@startuml
+hide methods
+hide stereotypes
+skinparam linetype ortho
+
+title ER Diagram - Users / Devices / Groups / Measurements
+
+entity "users" as users {
+  * id : BIGINT <<PK>>
+  --
+  name : VARCHAR
+  email : VARCHAR <<UNIQUE>>
+  password_hash : VARCHAR
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity "devices" as devices {
+  * id : BIGINT <<PK>>
+  --
+  name : VARCHAR
+  device_type : VARCHAR
+  tags : TEXT
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity "groups" as groups {
+  * id : BIGINT <<PK>>
+  --
+  name : VARCHAR
+}
+
+entity "groups_users" as groups_users {
+  * group_id : BIGINT <<PK, FK>>
+  * user_id : BIGINT <<PK, FK>>
+}
+
+entity "groups_devices" as groups_devices {
+  * group_id : BIGINT <<PK, FK>>
+  * device_id : BIGINT <<PK, FK>>
+}
+
+entity "timeseries" as timeseries {
+  * id : BIGINT <<PK>>
+  --
+  key : VARCHAR <<UNIQUE>>
+  device_id : BIGINT <<FK>>
+}
+
+entity "measurements" as measurements {
+  * id : BIGINT <<PK>>
+  --
+  timeseries_id : BIGINT <<FK>>
+  timestamp : TIMESTAMP
+  value : DECIMAL
+}
+
+groups ||--o{ groups_users
+users ||--o{ groups_users
+
+groups ||--o{ groups_devices
+devices ||--o{ groups_devices
+
+devices ||--o{ timeseries
+timeseries ||--o{ measurements
+
+@enduml

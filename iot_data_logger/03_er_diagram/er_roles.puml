@@ -3,6 +3,8 @@ hide methods
 hide stereotypes
 skinparam linetype ortho
 
+title ER Diagram - Users / Devices / Roles / Permissions
+
 entity "users" as users {
   * id : BIGINT <<PK>>
   --
@@ -60,37 +62,6 @@ entity "roles_permissions" as roles_permissions {
   * permission_id : BIGINT <<PK, FK>>
 }
 
-entity "groups" as groups {
-  * id : BIGINT <<PK>>
-  --
-  name : VARCHAR
-}
-
-entity "groups_users" as groups_users {
-  * group_id : BIGINT <<PK, FK>>
-  * user_id : BIGINT <<PK, FK>>
-}
-
-entity "groups_devices" as groups_devices {
-  * group_id : BIGINT <<PK, FK>>
-  * device_id : BIGINT <<PK, FK>>
-}
-
-entity "timeseries" as timeseries {
-  * id : BIGINT <<PK>>
-  --
-  key : VARCHAR <<UNIQUE>>
-  device_id : BIGINT <<FK>>
-}
-
-entity "measurements" as measurements {
-  * id : BIGINT <<PK>>
-  --
-  timeseries_id : BIGINT <<FK>>
-  timestamp : TIMESTAMP
-  value : DECIMAL
-}
-
 users ||--o{ users_roles
 roles ||--o{ users_roles
 
@@ -105,14 +76,5 @@ permissions ||--o{ devices_permissions
 
 roles ||--o{ roles_permissions
 permissions ||--o{ roles_permissions
-
-groups ||--o{ groups_users
-users ||--o{ groups_users
-
-groups ||--o{ groups_devices
-devices ||--o{ groups_devices
-
-devices ||--o{ timeseries
-timeseries ||--o{ measurements
 
 @enduml

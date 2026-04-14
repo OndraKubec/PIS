@@ -1,0 +1,30 @@
+@startuml
+title User Login
+
+actor User
+participant API
+database Database
+
+
+User -> API : Login
+activate User
+activate API
+
+API -> Database : Find user
+activate Database
+Database --> API : user found
+deactivate Database
+
+API -> Database : Get roles and perms
+activate Database
+Database --> API : roles found
+deactivate Database
+
+API -> API : Generate JWT token
+
+API --> User : Login success (token)
+deactivate API
+
+deactivate User
+
+@enduml

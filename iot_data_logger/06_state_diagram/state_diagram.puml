@@ -1,0 +1,15 @@
+@startuml
+title State Diagram - Device Measurement
+
+[*] --> Boot
+
+Boot --> [*] : self check failed
+Boot --> Measuring : self check passed
+
+state Measuring
+state Sending
+
+Measuring --> Sending : data collected
+Sending --> Measuring : data sent
+
+@enduml

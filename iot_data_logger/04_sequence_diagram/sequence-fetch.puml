@@ -1,0 +1,40 @@
+@startuml
+title Fetch User Data
+
+actor User
+participant API
+database Database
+collections Cache
+
+
+User -> API : Fetch data (token)
+
+activate User
+activate API
+
+API -> API : Validate token
+API -> API : Validate request
+
+API -> Database : Authorize
+activate Database
+Database --> API
+deactivate Database
+
+API -> Cache : Get data
+activate Cache
+Cache --> API : Cache miss
+deactivate Cache
+
+opt Cache miss
+    API -> Database : Fetch data
+    activate Database
+    Database --> API : Return data
+    deactivate Database
+end
+
+API --> User : Return data
+deactivate API
+
+deactivate User
+
+@enduml
