@@ -1,0 +1,34 @@
+services:
+    web:
+        build: .
+        ports:
+            - 8000:8000
+        volumes:
+            - data-docker-basis:/data
+        networks:
+            - blue
+
+    web2:
+        build: .
+        ports:
+            - 8001:8000
+        volumes:
+            - data-docker-basis:/data
+        networks:
+            - green
+
+    redis:
+        image: redis
+        volumes:
+            - redis-data:/data
+        networks:
+            - blue
+            - green
+
+volumes:
+    data-docker-basis:
+    redis-data:
+
+networks:
+    blue:
+    green:
